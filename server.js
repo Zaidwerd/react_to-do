@@ -4,6 +4,9 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
+const taskRouter = require('./routes/tasks');
+const homeRouter = require('./routes/index');
+
 const isDev = !('NODE_ENV' in process.env) && require('dotenv').config() && true;
 
 const app = express();
@@ -19,3 +22,5 @@ app.use((err, req, res, next) => {
   res.status(500).send('soomethings broken');
 });
 
+app.use('/tasks', taskRouter);
+app.use('/', homeRouter);
