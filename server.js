@@ -16,7 +16,7 @@ const port = process.argv[2] || process.env.PORT || 3000;
 app.listen(port, () => console.log('listening on port ', port));
 
 app.use(logger(isDev ? 'dev' : 'common'));
-app.use(express.static(__dirname, 'public'));
+app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json());
 
 app.use((err, req, res, next) => {
