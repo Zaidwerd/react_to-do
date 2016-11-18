@@ -4,16 +4,18 @@ export default function TaskForm(props) {
 
   const handleSubmit = (event) => {
     // stops event from leaving the form
-    event.stopPropagation();
+    event.preventDefault();
 
     // const newTask = {
     //   name: event.target.taskName.value,
     //   desc: event.target.taskDesc.value,
     // }
 
+    const myForm = event.target;
+
     props.addTask(
-      event.target.taskName.value,
-      event.target.taskDesc.value
+      myForm.taskName.value,
+      myForm.taskDesc.value
       );
     return false;
   };

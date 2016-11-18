@@ -8,6 +8,13 @@ import TaskList  from '../TaskList';
 import './App.css';
 import './GA_gear.png';
 
+// class Task {
+//   constructor(name, desc) {
+//     this.name = name;
+//     this.desc = desc;
+//   }
+// }
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -16,30 +23,28 @@ export default class App extends React.Component {
     this.state = {
       tasks: {},
     };
-
     this.addTask = this.addTask.bind(this);
   }
 
   addTask(name, desc) {
-    fetch('/tasks', {
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stingify({ name, desc }),
+      fetch('/tasks', {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        method: 'POST',
+        body: JSON.stingify({ name, desc })
     })
       .then(r => r.json())
       .then((newTask) => {
-        // const task = new Task(data);
         const newState = { ...this.state.tasks };
         newState[newTask.id] = newTask;
-        this.setState({ task: newState });
+        this.setState({
+          tasks: newState
+        });
       })
       .catch((error) => {
         throw error;
       });
-    // post to DB, this name and desc
-    // .then update the state
     // console.log(arguments);
   }
 
@@ -62,20 +67,29 @@ export default class App extends React.Component {
 
           {/* to do lists */}
 
+          {/* To Do Tasks */}
           <section className="row">
             <article className="col-md-4">
               <h3>Open Items</h3>
-              <TaskList />
+              <TaskList
+                collection={this.state.tasks}
+              />
             </article>
 
+            {/* Completed Tasks */}
             <article className="col-md-4">
               <h3>Completed Items</h3>
-              <TaskList />
+              <TaskList
+                collection={this.state.tasks}
+              />
             </article>
 
+            {/* Deleted Tasks */}
             <article className="col-md-4">
               <h3>Deleted Items</h3>
-              <TaskList />
+              <TaskList
+                collection={this.state.tasks}
+              />
             </article>
           </section>
 
