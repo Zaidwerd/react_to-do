@@ -1,20 +1,26 @@
 import React from 'react';
 import Task  from './Task';
 
-const generateTasks = collection =>
-  Object.keys(collection)
-        .map((taskID, i) => (
-          <Task
-            key={i}
-            title={collection[taskID].name}
-            description={collection[taskID].description}
-          />
-        ));
+const TaskList = props => {
 
-const TaskList = props => (
-  <div className="list-group">
-    {generateTasks(props.collection)}
-  </div>
-);
+  const generateTasks = collection =>
+  Object.keys(collection)
+    .filter(taskID => props.filter(collection[taskID]))
+    .map((taskID, i) => (
+      <Task
+        key={i}
+        title={collection[taskID].name}
+        description={collection[taskID].description}
+        click={() => props.toggleComplete(taskID)}
+      />
+    ));
+
+
+  return (
+    <div className="list-group">
+      {generateTasks(props.collection)}
+    </div>
+  );
+};
 
 export default TaskList;
