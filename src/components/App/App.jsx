@@ -3,7 +3,6 @@ import Nav       from '../Nav/Nav';
 import TaskForm  from '../TaskForm';
 import Footer    from '../Footer/Footer';
 import TaskList  from '../TaskList';
-// import db        from '../../../model/task';
 // import Task      from '../Model/Task';
 
 import './App.css';
@@ -22,18 +21,26 @@ export default class App extends React.Component {
   }
 
   addTask(name, desc) {
-
-    fetch()
+    fetch('/tasks', {
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stingify({ name, desc }),
+    })
       .then(r => r.json())
-      .then(data => {
-        const task = new Task(data);
-        const newState = {...this.state.tasks};
-        newState.push(task);
+      .then((newTask) => {
+        // const task = new Task(data);
+        const newState = { ...this.state.tasks };
+        newState[newTask.id] = newTask;
         this.setState({ task: newState });
+      })
+      .catch((error) => {
+        throw error;
       });
     // post to DB, this name and desc
     // .then update the state
-    console.log(arguments);
+    // console.log(arguments);
   }
 
   render() {
